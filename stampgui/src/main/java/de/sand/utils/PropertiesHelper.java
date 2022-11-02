@@ -9,6 +9,7 @@ public class PropertiesHelper {
     setMyOutDir();
     setConfigDir();
     setCentralConfigDir();
+    setWidths();
   }
 
   public static String [][] getDirectories() {
@@ -23,8 +24,17 @@ public class PropertiesHelper {
     erg[2][1]=System.getProperty("myOut.dir") ;
     erg[3][1]=System.getProperty("config.dir");
     erg[4][1]=System.getProperty("central.config.dir");
+    for (int i=0;i<erg.length;i++) {
+      if (erg[i][0].length() > Integer.parseInt(System.getProperty("message.column1.widths"))){
+        System.getProperty("message.column1.widths", String.valueOf(erg[i][0].length()));
+      }
+      if (erg[i][1].length() > Integer.parseInt(System.getProperty("message.column2.widths"))){
+        System.getProperty("message.column2.widths", String.valueOf(erg[i][1].length()));
+      }
+    }
     return erg;
   }
+
   public static String [][] getAbout(){
     String [] [] erg = new String[4][2];
     erg[0][0]="AppName";
@@ -35,6 +45,14 @@ public class PropertiesHelper {
     erg[1][1] = myMain.getVersion();
     erg[2][1] = myMain.getAutor();
     erg[3][1] = System.getProperty("os.name");
+    for (int i=0;i<erg.length;i++) {
+      if (erg[i][0].length() > Integer.parseInt(System.getProperty("message.column1.widths"))){
+        System.getProperty("message.column1.widths", String.valueOf(erg[i][0].length()));
+      }
+      if (erg[i][1].length() > Integer.parseInt(System.getProperty("message.column2.widths"))){
+        System.getProperty("message.column2.widths", String.valueOf(erg[i][1].length()));
+      }
+    }
     return erg;
   }
 
@@ -61,6 +79,15 @@ public class PropertiesHelper {
     if(System.getProperty("central.config.dir")== null){
       File myUserDir = new File(System.getProperty("myUser.dir"));
       System.setProperty("central.config.dir", myUserDir.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"config");
+    }
+  }
+
+  private static void setWidths() {
+    if (System.getProperty("message.column1.widths") == null) {
+      System.setProperty("message.column1.widths", "0");
+    }
+    if (System.getProperty("message.column2.widths") == null) {
+      System.setProperty("message.column2.widths", "0");
     }
   }
 }
