@@ -1,5 +1,8 @@
 package de.sand.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class StringHelper {
   public static String getRepString(String a, int n) {
     String erg = "";
@@ -10,6 +13,12 @@ public class StringHelper {
         }
       }
     }
+    return erg;
+  }
+  public static String aktuelleZeit(){
+    Date jetzt = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd'.' 'MMMM' 'YYYY' 'hh:mm:ss");
+    String erg = sdf.format(jetzt);
     return erg;
   }
 }

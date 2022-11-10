@@ -1,18 +1,39 @@
 package de.sand.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.Set;
 import de.sand.main.myMain;
 
 public class PropertiesHelper {
-  public static void setDirectories() {
-    setMyUserDir();
-    setMyOutDir();
-    setConfigDir();
-    setCentralConfigDir();
-    setWidths();
+
+  public static String [][] getDbProperties(){
+    initWidths();
+    Properties dbProp = readDbProperties();
+    final Set<String> setDbProp = dbProp.stringPropertyNames();
+    int anzDbProp = setDbProp.size();
+    String [][] dbProperties = new String[anzDbProp][2];
+    int propNum = 0;
+    for (Enumeration<?> enumDbProp = dbProp.propertyNames(); enumDbProp.hasMoreElements();){
+      String key =(String) enumDbProp.nextElement();
+      dbProperties[propNum][0] = key;
+      if(dbProperties[propNum][0].length()>Integer.parseInt(System.getProperty("message.column1.widths"))){
+        System.setProperty("message.column1.widths", String.valueOf(dbProperties[propNum][0].length()));
+      }
+      dbProperties[propNum][1] = dbProp.getProperty(key);
+      if(dbProperties[propNum][1].length()>Integer.parseInt(System.getProperty("message.column2.widths"))){
+        System.setProperty("message.column2.widths", String.valueOf(dbProperties[propNum][1].length()));
+      }
+      propNum++;
+    }
+    return dbProperties;
   }
 
   public static String [][] getDirectories() {
+    initWidths();
+    setDirectories();
     String [] [] erg = new String[5][2];
     erg[0][0]="User Dir";
     erg[1][0]="MyUser Dir";
@@ -36,6 +57,7 @@ public class PropertiesHelper {
   }
 
   public static String [][] getAbout(){
+    initWidths();
     String [] [] erg = new String[4][2];
     erg[0][0]="AppName";
     erg[1][0]="Version";
@@ -78,16 +100,49 @@ public class PropertiesHelper {
   private static void setCentralConfigDir(){
     if(System.getProperty("central.config.dir")== null){
       File myUserDir = new File(System.getProperty("myUser.dir"));
-      System.setProperty("central.config.dir", myUserDir.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"config");
+      System.setProperty("central.config.dir", myUserDir.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"centralConfig");
     }
   }
 
-  private static void setWidths() {
+  private static void initWidths() {
     if (System.getProperty("message.column1.widths") == null) {
       System.setProperty("message.column1.widths", "0");
     }
     if (System.getProperty("message.column2.widths") == null) {
       System.setProperty("message.column2.widths", "0");
     }
+  }
+
+  private static Properties readDbProperties(){
+    Properties erg = new Properties();
+    FileInputStream dbProp;
+    try{
+      String filename = System.getProperty("central.config.dir").concat(System.getProperty("file.separator")).concat("db.config");
+      if (new File(filename).isFile()){
+        dbProp = new FileInputStream(filename);
+        erg.load(dbProp);
+        dbProp.close();
+      }else{
+        System.out.println("Datei nicht gefunden: "+filename);
+      }
+      filename = System.getProperty("config.dir").concat(System.getProperty("file.separator")).concat("db.config");
+      if (new File(filename).isFile()){
+        dbProp = new FileInputStream(filename);
+        erg.load(dbProp);
+        dbProp.close();
+      }else{
+        System.out.println("Datei nicht gefunden: "+filename);
+      }
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+    return erg;
+  }
+
+  private static void setDirectories() {
+    setMyUserDir();
+    setMyOutDir();
+    setConfigDir();
+    setCentralConfigDir();
   }
 }
