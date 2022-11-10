@@ -2,17 +2,15 @@ package de.sand.main;
 
 import de.sand.utils.PropertiesHelper;
 import de.sand.work.Caller;
+import de.sand.gui.StampFrame;
 
 public class myMain {
 
-  static boolean gui = false;
-  static boolean vers = false;
+  static boolean gui;
   public static void main(String[] args) {
     if (args.length > 0) {
+      setGui(false);
       for (int i = 0; i < args.length; i++) {
-        if (args[i].equalsIgnoreCase("-vers")) {
-          setVers(true);
-        }
         if (args[i].equalsIgnoreCase("-gui")) {
           setGui(true);
         }
@@ -29,15 +27,14 @@ public class myMain {
           System.setProperty("central.config.dir", args[i + 1]);
         }
       }
-
     } else {
       setGui(true);
     }
-    PropertiesHelper.setDirectories();
-    if(getVers()==true){
-      Caller.showText(PropertiesHelper.getAbout(), getGui());
-    }
-    Caller.showText(PropertiesHelper.getDirectories(), getGui());
+    Caller.showText(PropertiesHelper.getAbout(), false);
+    Caller.showText(PropertiesHelper.getDirectories(), false);
+    Caller.showText(PropertiesHelper.getDbProperties(), false);
+    @SuppressWarnings("unused")
+    final StampFrame frame = new StampFrame(getGui());
   }
 
   public static String getVersion() {
@@ -52,16 +49,12 @@ public class myMain {
     return "Thomas Sand";
   }
 
-  private static void setVers(boolean inVers){
-    vers = inVers;
+  public static boolean getGui(){
+    return gui;
   }
-  private static boolean getVers(){
-    return vers;
-  }
+
   private static void setGui(boolean inGui){
     gui = inGui;
   }
-  private static boolean getGui(){
-    return gui;
-  }
+
 }
