@@ -1,11 +1,11 @@
 package de.sand.work;
 
 import de.sand.gui.StampFrame;
-import de.sand.main.myMain;
 import de.sand.utils.StringHelper;
 import javax.swing.JOptionPane;
 
 public class Caller {
+  private static String appName = System.getProperty("app.name");
   public static void showText(String[][] text, boolean gui){
     int width1 = Integer.parseInt(System.getProperty("message.column1.widths"));
     int width2 = Integer.parseInt(System.getProperty("message.column2.widths"));
@@ -34,13 +34,13 @@ public class Caller {
     if(gui ==false){
       System.out.println(message);
     }else{
-      JOptionPane.showMessageDialog(null,message,myMain.getAppName(),JOptionPane.INFORMATION_MESSAGE);
+      JOptionPane.showMessageDialog(null,message,appName,JOptionPane.INFORMATION_MESSAGE);
     }
   }
   public static void exit(){
     String[] yesNoOpt ={"Beenden","Abbrechen"};
-    String msg = "Wollen Sie die " + myMain.getAppName()+ " beenden? ";
-    String title = myMain.getAppName();
+    String msg = "Wollen Sie die " + appName+ " beenden? ";
+    String title = appName;
     int ync = JOptionPane.YES_NO_OPTION;
     int q = JOptionPane.QUESTION_MESSAGE;
     if(StampFrame.processRunning){
@@ -53,6 +53,12 @@ public class Caller {
     }else{
       System.out.println("Abbruch:"+n);
     }
+  }
+  public static void connect(){
+    //todo: implement
+  }
+  public static void disConnect(){
+    //todo: implement
   }
   public static void export(String importart){
     if(importart.equalsIgnoreCase("ADDISON")){

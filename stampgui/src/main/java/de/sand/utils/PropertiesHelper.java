@@ -5,13 +5,14 @@ import java.io.FileInputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Set;
-import de.sand.main.myMain;
+import de.sand.work.Algorithmus;
 
 public class PropertiesHelper {
-
-  public static String [][] getDbProperties(){
+  Properties dbProperties;
+  public static String [][] getDbProperties(Algorithmus alg){
     initWidths();
     Properties dbProp = readDbProperties();
+    alg.setDbProperties(dbProp);
     final Set<String> setDbProp = dbProp.stringPropertyNames();
     int anzDbProp = setDbProp.size();
     String [][] dbProperties = new String[anzDbProp][2];
@@ -30,7 +31,6 @@ public class PropertiesHelper {
     }
     return dbProperties;
   }
-
   public static String [][] getDirectories() {
     initWidths();
     setDirectories();
@@ -55,7 +55,6 @@ public class PropertiesHelper {
     }
     return erg;
   }
-
   public static String [][] getAbout(){
     initWidths();
     String [] [] erg = new String[4][2];
@@ -63,9 +62,9 @@ public class PropertiesHelper {
     erg[1][0]="Version";
     erg[2][0]="Author";
     erg[3][0]="OS-Version";
-    erg[0][1] = myMain.getAppName();
-    erg[1][1] = myMain.getVersion();
-    erg[2][1] = myMain.getAutor();
+    erg[0][1] = System.getProperty("app.name");
+    erg[1][1] = System.getProperty("app.version");
+    erg[2][1] = System.getProperty("app.author");
     erg[3][1] = System.getProperty("os.name");
     for (int i=0;i<erg.length;i++) {
       if (erg[i][0].length() > Integer.parseInt(System.getProperty("message.column1.widths"))){
@@ -77,33 +76,28 @@ public class PropertiesHelper {
     }
     return erg;
   }
-
   private static void setMyUserDir() {
     if (System.getProperty("myUser.dir") ==null) {
       System.setProperty("myUser.dir", System.getProperty("user.dir"));
     }
   }
-
   private static void setMyOutDir() {
     if (System.getProperty("myOut.dir") == null) {
       System.setProperty("myOut.dir", System.getProperty("myUser.dir"));
     }
   }
-
   private static void setConfigDir() {
     if (System.getProperty("config.dir") == null) {
       File myUserDir = new File(System.getProperty("myUser.dir"));
       System.setProperty("config.dir", myUserDir.getAbsolutePath() + System.getProperty("file.separator") + "config");
     }
   }
-
   private static void setCentralConfigDir(){
     if(System.getProperty("central.config.dir")== null){
       File myUserDir = new File(System.getProperty("myUser.dir"));
       System.setProperty("central.config.dir", myUserDir.getParentFile().getAbsolutePath()+System.getProperty("file.separator")+"centralConfig");
     }
   }
-
   private static void initWidths() {
     if (System.getProperty("message.column1.widths") == null) {
       System.setProperty("message.column1.widths", "0");
@@ -112,7 +106,6 @@ public class PropertiesHelper {
       System.setProperty("message.column2.widths", "0");
     }
   }
-
   private static Properties readDbProperties(){
     Properties erg = new Properties();
     FileInputStream dbProp;
@@ -138,7 +131,6 @@ public class PropertiesHelper {
     }
     return erg;
   }
-
   private static void setDirectories() {
     setMyUserDir();
     setMyOutDir();

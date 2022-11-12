@@ -8,27 +8,53 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import de.sand.main.myMain;
 import de.sand.utils.PropertiesHelper;
 import de.sand.work.Caller;
 
 public class StampMenuBar extends JMenuBar{
-  private StampFrame parentFrame;
   private JMenuItem jmi;
-
+  private String appName = System.getProperty("app.name");
+  private boolean gui;
   public StampMenuBar(StampFrame frame){
-    setParentFrame(frame);
-    this.add(menuEnd());
+    gui =frame.getAlg().getGui();
+    this.add(menuDB());
+    this.add(menuAbout());
   }
-  private JMenu menuEnd() {
-    JMenu end = new JMenu(myMain.getAppName());
-    jmi = end.add(new JMenuItem(actionAbout()));
-    jmi.setText("über " + myMain.getAppName());
-    jmi = end.add(new JMenuItem(actionDirectories()));
-    jmi.setText("Pfade "+ myMain.getAppName());
-    jmi = end.add(new JMenuItem(actionEnd()));
-    jmi.setText(myMain.getAppName().concat(" beenden"));
-    return end;
+  private JMenu menuDB(){
+    JMenu db = new JMenu("Datenbank");
+    jmi = db.add(new JMenuItem(actionConnect()));
+    jmi.setText("DB verbinden");
+    jmi = db.add(new JMenuItem(actionDisconnect()));
+    jmi.setText("DB trennen");
+    jmi = db.add(new JMenuItem(actionEnd()));
+    jmi.setText(appName.concat(" beenden"));
+    return db;
+  }
+  private JMenu menuAbout() {
+    JMenu about = new JMenu(appName);
+    jmi = about.add(new JMenuItem(actionAbout()));
+    jmi.setText("über " + appName);
+    jmi = about.add(new JMenuItem(actionDirectories()));
+    jmi.setText("Pfade "+ appName);
+    return about;
+  }
+  private Action actionConnect(){
+    Action erg = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Caller.connect();;
+      };
+    } ;
+    return erg;
+  }
+  private Action actionDisconnect(){
+    Action erg = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Caller.disConnect();
+      };
+    } ;
+    return erg;
   }
   private Action actionEnd(){
     Action erg = new AbstractAction() {
@@ -43,7 +69,7 @@ public class StampMenuBar extends JMenuBar{
     Action erg = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Caller.showText(PropertiesHelper.getAbout(), myMain.getGui());;
+        Caller.showText(PropertiesHelper.getAbout(), gui);;
       }
     };
     return erg;
@@ -52,15 +78,9 @@ public class StampMenuBar extends JMenuBar{
     Action erg = new AbstractAction() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Caller.showText(PropertiesHelper.getDirectories(), myMain.getGui());;
+        Caller.showText(PropertiesHelper.getDirectories(), gui);;
       }
     };
     return erg;
-  }
-  public StampFrame getParentFrame(){
-    return parentFrame;
-  }
-  private void setParentFrame(StampFrame frame){
-    this.parentFrame = frame;
   }
 }

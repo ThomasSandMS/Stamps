@@ -5,18 +5,19 @@ import java.awt.event.WindowAdapter;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import de.sand.main.myMain;
+import de.sand.work.Algorithmus;
 
 public class StampFrame extends JFrame {
   public static boolean processRunning = false;
+  private Algorithmus alg;
   private WindowAdapter wa;
   public JMenuBar hMB;
   private StampPanel jp;
   private String importArt ="";
   private String sql = "";
 
-  public StampFrame(boolean gui){
-    initWindow(gui);
+  public StampFrame(boolean gui, Algorithmus algorithmus){
+    initWindow(gui, algorithmus);
   }
   public void setImportart(String importart){
     this.importArt = importart;
@@ -30,7 +31,8 @@ public class StampFrame extends JFrame {
   public String getSql(){
     return this.sql;
   }
-  private void initWindow(boolean gui){
+  private void initWindow(boolean gui, Algorithmus algorithmus){
+    setAlg(algorithmus);
     setWindowAdapter();
     setAttributes();
     setMenuBar();
@@ -44,8 +46,10 @@ public class StampFrame extends JFrame {
     addWindowListener(getWA());
   }
   private void setAttributes(){
-    setTitle(myMain.getAppName().concat(" ").concat(myMain.getVersion()));
-    setSize(900,700);
+    String appName = System.getProperty("app.name");
+    String version = System.getProperty("app.version");
+    setTitle(appName.concat(" ").concat(version));
+    setSize(1200,1000);
     setLocationRelativeTo(null);
   }
   private void setMenuBar(){
@@ -64,5 +68,11 @@ public class StampFrame extends JFrame {
   }
   private WindowAdapter getWA(){
     return wa;
+  }
+  private void setAlg(Algorithmus algoritmus){
+    this.alg = algoritmus;
+  }
+  public Algorithmus getAlg(){
+    return this.alg;
   }
 }
