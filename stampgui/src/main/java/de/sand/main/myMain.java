@@ -1,18 +1,14 @@
 package de.sand.main;
 
-import de.sand.utils.PropertiesHelper;
-import de.sand.work.Caller;
-import de.sand.gui.StampFrame;
-
+import de.sand.work.Algorithmus;
 public class myMain {
-
-  static boolean gui;
   public static void main(String[] args) {
+    boolean gui= false;
+    //Argumente auswerten
     if (args.length > 0) {
-      setGui(false);
       for (int i = 0; i < args.length; i++) {
         if (args[i].equalsIgnoreCase("-gui")) {
-          setGui(true);
+          gui = true;
         }
         if (args[i].equalsIgnoreCase("-pfad")) {
           System.setProperty("myUser.dir", args[i + 1]);
@@ -28,33 +24,16 @@ public class myMain {
         }
       }
     } else {
-      setGui(true);
+      gui = true;
     }
-    Caller.showText(PropertiesHelper.getAbout(), false);
-    Caller.showText(PropertiesHelper.getDirectories(), false);
-    Caller.showText(PropertiesHelper.getDbProperties(), false);
+    initAppProperties(gui);
     @SuppressWarnings("unused")
-    final StampFrame frame = new StampFrame(getGui());
+    Algorithmus alg= new Algorithmus();
   }
-
-  public static String getVersion() {
-    return "1.0.0";
+  private static void initAppProperties(boolean gui){
+    System.setProperty("app.version", "1.0.0");
+    System.setProperty("app.name", "Briefmarken");
+    System.setProperty("app.author", "Thomas Sand");
+    System.setProperty("app.gui", String.valueOf(gui));
   }
-
-  public static String getAppName() {
-    return "STAMPS GUI";
-  }
-
-  public static String getAutor() {
-    return "Thomas Sand";
-  }
-
-  public static boolean getGui(){
-    return gui;
-  }
-
-  private static void setGui(boolean inGui){
-    gui = inGui;
-  }
-
 }
