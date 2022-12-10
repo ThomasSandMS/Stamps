@@ -13,22 +13,22 @@ public class DbConnector {
 
 	public static Connection getSQLConnection(Properties p) throws IOException {
 		try {
-			DbArt dbsorte = DbArt.getSorteFromString( p.getProperty("type") );
+			DbArt dbsorte = DbArt.getSorteFromString( p.getProperty("dbArt") );
 			num = dbsorte.getNum();
-			String connString = "jdbc:" + dbsorte.getTyp() + ":" + p.getProperty("connectionString");
+			String connString = "jdbc:" + dbsorte.getTyp() + "://" + p.getProperty("server")+";database="+p.getProperty("database");
 
 			connClose();
 
 			if ((conn == null) || (conn.isClosed())) {
-//				 try {
-//					Class.forName("org.h2.Driver");
-//				} catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-//				}
-			System.out.println(connString);
+        try {
+          Class.forName(dbsorte.getKlasse());
+        } catch (ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+			  System.out.println(connString);
 //			Bl�d, aber ojdbc14.jar ben�tigt die Zeile :(
 //			DriverManager.registerDriver (new oracle.jdbc.OracleDriver());
-			conn = DriverManager.getConnection( connString, p );
+			  conn = DriverManager.getConnection( connString, p );
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

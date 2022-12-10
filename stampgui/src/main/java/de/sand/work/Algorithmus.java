@@ -1,9 +1,11 @@
 package de.sand.work;
 
 import java.util.Properties;
+import java.io.IOException;
 import java.sql.Connection;
 
 import de.sand.utils.PropertiesHelper;
+import de.sand.db.DbConnector;
 import de.sand.gui.StampFrame;
 
 public class Algorithmus {
@@ -12,14 +14,20 @@ public class Algorithmus {
   boolean gui;
   public Algorithmus (){
     init();
+    setConn();
+    if (conn.equals(null)){
+      System.out.println("Conn is NULL");
+    }else{
+      System.out.println("Conn is not NULL");
+    }
+     @SuppressWarnings("unused")
+    final StampFrame frame = new StampFrame(getGui(), this);
   }
   private void init(){
     setGui(String.valueOf(true).equalsIgnoreCase(System.getProperty("app.gui")));
     Caller.showText(PropertiesHelper.getAbout(), false);
     Caller.showText(PropertiesHelper.getDirectories(), false);
     Caller.showText(PropertiesHelper.getDbProperties(this), false);
-    @SuppressWarnings("unused")
-    final StampFrame frame = new StampFrame(getGui(), this);
   }
   public void setDbProperties(Properties prop){
     this.dbProperties = prop;
@@ -29,6 +37,15 @@ public class Algorithmus {
   }
   public void setConn(Connection connection){
     this.conn = connection;
+  }
+  public void setConn(){
+    try{
+      Connection connect = DbConnector.getSQLConnection(dbProperties);
+      this.conn = connect;
+    }catch(IOException e){
+      System.out.println(e.getMessage());
+      System.exit(0);
+    }
   }
   public Connection getConn(){
     return this.conn;
