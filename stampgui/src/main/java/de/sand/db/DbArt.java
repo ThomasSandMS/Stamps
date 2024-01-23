@@ -5,20 +5,16 @@ package de.sand.db;
 /**
  * Die "unterstützten" Datenbanktypen.
  *
- * @author lepper
- * @version 0.06 090114 jTDS vorbereitet<br>
- * 0.05 080822 nouser wieder rausgeworfen<br>
- * 0.04 080814 getSorteFromString<br>
- * 0.03 080707 Umstieg auf neuen mssql-jdbc-Treiber. Ärger. nouser testweise<br>
- * 0.02 071028 Ausweitungsversuche gen Oracle und ODBC, getSorteFromInt<br>
- * 0.01 070713
+ * @author Sand Vorlage lepper
+ * @version
+ * 0.01 221222
  */
 enum DbArt {
 	ACCESS2000 (0),
-	MSSQL (1, "com.microsoft.sqlserver.jdbc.SQLServerDriver", "sqlserver" ),
-	ORACLE (3, "oracle.jdbc.driver.OracleDriver", "oracle:thin" ),
-	MYSQL (4, "com.mysql.jdbc.Driver", "mysql"),
-	H2 (7, "org.h2.Driver", "h2");
+	MSSQL (1, "com.microsoft.sqlserver.jdbc.SQLServerDriver", "sqlserver:" ),
+	ORACLE (3, "oracle.jdbc.driver.OracleDriver", "oracle:thin:@" ),
+	MYSQL (4, "com.mysql.jdbc.Driver", "mysql:"),
+	H2 (7, "org.h2.Driver", "h2:");
 
   private int num;
 	private String klasse, typ;

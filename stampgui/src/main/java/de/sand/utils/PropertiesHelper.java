@@ -11,7 +11,7 @@ public class PropertiesHelper {
   Properties dbProperties;
   public static String [][] getDbProperties(Algorithmus alg){
     initWidths();
-    Properties dbProp = readDbProperties();
+    Properties dbProp = setDbProperties();
     alg.setDbProperties(dbProp);
     final Set<String> setDbProp = dbProp.stringPropertyNames();
     int anzDbProp = setDbProp.size();
@@ -106,7 +106,7 @@ public class PropertiesHelper {
       System.setProperty("message.column2.widths", "0");
     }
   }
-  private static Properties readDbProperties(){
+  public static Properties setDbProperties(){
     Properties erg = new Properties();
     FileInputStream dbProp;
     try{
@@ -137,4 +137,18 @@ public class PropertiesHelper {
     setConfigDir();
     setCentralConfigDir();
   }
+  /*
+
+    } catch (FileNotFoundException e) {
+      throw new DatatypeConfigurationException(e.getMessage());
+    } catch (IOException e) {
+      throw new DatatypeConfigurationException(e.getMessage());
+    } catch (WrongConfigException e) {
+      throw new DatatypeConfigurationException(
+          "die parameter in cfg file sind nicht vollstaendig. Passwort wird nicht angezeigt!\nuser: "
+              + e.getUser() + " DBTYPE: " + e.getDbType() + " hostAndPort: " + e.getHostAndPort()
+              + "\n",
+          e);
+   *
+   */
 }

@@ -44,7 +44,7 @@ public class Algorithmus {
       this.conn = connect;
     }catch(IOException e){
       System.out.println(e.getMessage());
-      System.exit(0);
+      //System.exit(0);
     }
   }
   public Connection getConn(){
